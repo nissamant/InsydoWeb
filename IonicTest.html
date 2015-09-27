@@ -1,0 +1,182 @@
+<html ng-app="ionicApp">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title>Tabs Example</title>
+    <link href="http://code.ionicframework.com/nightly/css/ionic.css" rel="stylesheet">
+    <script src="http://code.ionicframework.com/nightly/js/ionic.bundle.js"></script>
+  </head>
+
+  <body>
+    <ion-nav-bar class="bar-positive">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+    </ion-nav-bar>
+             
+    <ion-nav-view></ion-nav-view>
+
+
+    <script id="templates/tabs.html" type="text/ng-template">
+      <ion-tabs class="tabs-icon-top tabs-positive">
+
+        <ion-tab title="Photos" icon="ion-home" href="#/tab/home">
+          <ion-nav-view name="home-tab"></ion-nav-view>
+        </ion-tab>
+
+        <ion-tab title="Favorites" icon="ion-ios-information" href="#/tab/favorites">
+          <ion-nav-view name="favorites-tab"></ion-nav-view>
+        </ion-tab>
+
+        <ion-tab title="Friends" icon="ion-ios-world" ui-sref="tabs.friends">
+          <ion-nav-view name="friends-tab"></ion-nav-view>
+        </ion-tab>
+
+      </ion-tabs>
+    </script>
+
+    <script id="templates/home.html" type="text/ng-template">
+      
+	  <ion-view view-title="Photos">
+	  <ion-pane>
+            <ion-header-bar class="bar-stable">
+                <h1 class="title">Ionic Blank Starter</h1>
+            </ion-header-bar>
+            <ion-content>
+                <div class="row responsive-md">
+                    <div class="col col-25" ng-repeat="photo in photos">
+                        <img ng-src="{{photo.image_url}}" style="width:100%" />
+                    </div>
+                </div>
+            </ion-content>
+        </ion-pane>
+		</ion-view>
+    </script>
+    <script id="templates/favorites.html" type="text/ng-template">
+     <ion-view view-title="Favorites">
+	  <ion-pane>
+            <ion-header-bar class="bar-stable">
+                <h1 class="title">Ionic Blank Starter</h1>
+            </ion-header-bar>
+            <ion-content>
+                <div class="row responsive-md">
+                    <div class="col col-25" ng-repeat="photo in favorites">
+                        <img ng-src="{{photo.image_url}}" style="width:100%" />
+                    </div>
+                </div>
+            </ion-content>
+        </ion-pane>
+		</ion-view>
+    </script>
+
+    <script id="templates/friends.html" type="text/ng-template">
+       <ion-view view-title="Friends">
+	  <ion-pane>
+            <ion-header-bar class="bar-stable">
+                <h1 class="title">Ionic Blank Starter</h1>
+            </ion-header-bar>
+            <ion-content>
+                <div class="row responsive-md">
+                    <div class="col col-25" ng-repeat="photo in friends">
+                        <img ng-src="{{photo.image_url}}" style="width:100%"/>
+                    </div>
+                </div>
+            </ion-content>
+        </ion-pane>
+		</ion-view>
+</script>
+	
+<script>
+	angular.module('ionicApp', ['ionic'])
+
+.config(function($stateProvider, $urlRouterProvider) {
+
+  $stateProvider
+    .state('tabs', {
+      url: "/tab",
+      abstract: true,
+      templateUrl: "templates/tabs.html"
+    })
+    .state('tabs.home', {
+      url: "/home",
+      views: {
+        'home-tab': {
+          templateUrl: "templates/home.html",
+          controller: 'PhotoTabCtrl'
+        }
+      }
+    })
+    .state('tabs.favorites', {
+      url: "/favorites",
+      views: {
+        'favorites-tab': {
+          templateUrl: "templates/favorites.html",
+		  controller: 'FavoritesTabCtrl'
+        }
+      }
+    })
+    .state('tabs.friends', {
+      url: "/friends",
+      views: {
+        'friends-tab': {
+          templateUrl: "templates/friends.html",
+		  controller: 'FriendsTabCtrl'
+        }
+      }
+    });
+
+
+   $urlRouterProvider.otherwise("/tab/home");
+
+})
+
+.controller('PhotoTabCtrl', function($scope,$http) {
+  console.log('PhotoTabCtrl');
+  
+	var url = 'https://api.500px.com/v1/photos?feature=user&username=basel&sort=created_at&image_size=1&include_store=store_download&include_states=voted&consumer_key=Skph23JSSnd0ycv4DFkmxDRDW5qzL3KJyOA4PiXP';
+	
+	$http.get(url).success(function(data, status, headers, config) {
+        $scope.photos = data.photos;
+
+
+    }).error(function (data, status, headers, config) {
+        unblockUI($(window));
+    });
+	
+	
+})
+
+.controller('FavoritesTabCtrl', function($scope,$http) {
+  console.log('FavoritesTabCtrl');
+  
+	var url = 'https://api.500px.com/v1/photos?feature=user_favorites&username=basel&sort=created_at&image_size=1&include_store=store_download&include_states=voted&consumer_key=Skph23JSSnd0ycv4DFkmxDRDW5qzL3KJyOA4PiXP';
+	
+	$http.get(url).success(function(data, status, headers, config) {
+        $scope.favorites = data.photos;
+
+
+    }).error(function (data, status, headers, config) {
+        unblockUI($(window));
+    });
+	
+	
+})
+
+.controller('FriendsTabCtrl', function($scope,$http) {
+  console.log('FriendsTabCtrl');
+  
+	var url = 'https://api.500px.com/v1/photos?feature=user_friends&username=basel&sort=created_at&image_size=1&include_store=store_download&include_states=voted&consumer_key=Skph23JSSnd0ycv4DFkmxDRDW5qzL3KJyOA4PiXP';
+	
+	$http.get(url).success(function(data, status, headers, config) {
+        $scope.friends = data.photos;
+
+
+    }).error(function (data, status, headers, config) {
+        unblockUI($(window));
+    });
+	
+	
+});
+</script>
+
+</body>
+</html>
