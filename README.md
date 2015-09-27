@@ -1,6 +1,8 @@
 # InsydoWeb
 Insydo
 
+Task : 1
+
 For IonicWebTest
 
 1. Created Simple Ionic App with three Tabs : Photos, Favorites, Friends
@@ -25,3 +27,13 @@ For Friends
 here feature : user_friends as parameter with username basel
 
 API: 'https://api.500px.com/v1/photos?feature=user_friends&username=basel&sort=created_at&image_size=1&include_store=store_download&include_states=voted&consumer_key=Skph23JSSnd0ycv4DFkmxDRDW5qzL3KJyOA4PiXP';
+
+
+Task : 2
+
+1) Used Foundation CSS framework to implement the website structure. Foundation CSS is reponsive implementation.
+
+2) Used foundation grid to implement the sections Sports ,Interests & Hobbies
+
+3) Used Font Helvetica & Pacifico . I used Pacifico instead of BrushScript MT since it's not free.
+
